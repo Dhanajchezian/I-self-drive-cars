@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Fuel, Settings, ChevronDown, MapPin, FileText, MessageCircle } from 'lucide-react';
 import { Vehicle, getBookingLink } from '@/data/vehicles';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, autoplay } from '@/components/ui/carousel';
 
 interface CarCardProps {
   vehicle: Vehicle;
@@ -13,12 +14,33 @@ const CarCard = ({ vehicle }: CarCardProps) => {
     <article className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-shine">
       {/* Image */}
       <div className="relative aspect-[5/4] bg-primary/5 overflow-hidden">
-        <img
-          src={vehicle.image}
-          alt={`${vehicle.name} self drive car rental in Chennai`}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-        />
+        {vehicle.images && vehicle.images.length > 1 ? (
+          <Carousel plugins={[autoplay({ delay: 2000 })]}>
+            <CarouselContent className="flex">
+              {vehicle.images.map((src, i) => (
+                <CarouselItem key={i}>
+                  <img
+                    src={src}
+                    alt={`${vehicle.name} view ${i + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        ) : (
+          <img
+            src={vehicle.images?.[0] ?? '/images/placeholder.svg'}
+            alt={`${vehicle.name} self drive car rental in Chennai`}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        )}
+
         <span className="absolute top-3 right-3 bg-gold/90 text-gold-foreground text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
           Limited Availability
         </span>

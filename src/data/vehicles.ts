@@ -11,7 +11,7 @@ export interface Vehicle {
   cleaningCharge: number;
   idProofs: number;
   delivery?: { airport?: number; egmore?: number; central?: number };
-  image: string;
+  images: string[];
 }
 
 export const vehicles: Vehicle[] = [
@@ -27,7 +27,7 @@ export const vehicles: Vehicle[] = [
     deposit: 2000,
     cleaningCharge: 0,
     idProofs: 3,
-    image: '/images/scooter.jpg',
+    images: ['/images/scooter1.jpg','/images/scooter2.jpg','/images/scooter3.jpg'],
   },
   {
     id: 'honda-amaze-manual',
@@ -42,7 +42,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 300,
     idProofs: 3,
     delivery: { airport: 350, egmore: 250, central: 250 },
-    image: '/images/sedan.jpg',
+    images: ['/images/amaze1.jpg','/images/amaze2.jpg','/images/amaze3.jpg'],
   },
   {
     id: 'tata-nexon',
@@ -57,7 +57,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 400,
     idProofs: 3,
     delivery: { airport: 600, egmore: 400, central: 450 },
-    image: '/images/suv.jpg',
+    images: ['/images/nexon1.jpg','/images/nexon2.jpg','/images/nexon3.jpg'],
   },
   {
     id: 'maruti-ertiga',
@@ -71,7 +71,7 @@ export const vehicles: Vehicle[] = [
     deposit: 5000,
     cleaningCharge: 350,
     idProofs: 2,
-    image: '/images/mpv.jpg',
+    images: ['/images/ertiga1.jpg','/images/ertiga2.jpg','/images/ertiga3.jpg'],
   },
   {
     id: 'fronx',
@@ -86,7 +86,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 300,
     idProofs: 2,
     delivery: { airport: 350, egmore: 250, central: 250 },
-    image: '/images/hatchback.jpg',
+    images: ['/images/fronx1.jpg','/images/fronx2.jpg'],
   },
   {
     id: 'mahindra-thar',
@@ -100,7 +100,7 @@ export const vehicles: Vehicle[] = [
     deposit: 4000,
     cleaningCharge: 500,
     idProofs: 4,
-    image: '/images/suv.jpg',
+    images: ['/images/thar1.jpg','/images/thar2.jpg'],
   },
   {
     id: 'kia-carens',
@@ -114,7 +114,7 @@ export const vehicles: Vehicle[] = [
     deposit: 5000,
     cleaningCharge: 400,
     idProofs: 3,
-    image: '/images/mpv.jpg',
+    images: ['/images/kia1.jpg','/images/kia2.jpg','/images/kia3.jpg'],
   },
   {
     id: 'toyota-fortuner',
@@ -128,7 +128,7 @@ export const vehicles: Vehicle[] = [
     deposit: 5000,
     cleaningCharge: 450,
     idProofs: 5,
-    image: '/images/suv.jpg',
+    images: ['/images/fortuner1.jpg','/images/fortuner2.jpg','/images/fortuner3.jpg'],
   },
   {
     id: 'swift-automatic',
@@ -143,7 +143,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 300,
     idProofs: 2,
     delivery: { airport: 350, egmore: 250, central: 250 },
-    image: '/images/hatchback.jpg',
+    images: ['/images/swift1.jpg','/images/swift2.jpg'],
   },
   {
     id: 'honda-amaze-auto',
@@ -158,7 +158,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 300,
     idProofs: 3,
     delivery: { airport: 550, egmore: 250, central: 250 },
-    image: '/images/sedan.jpg',
+    images: ['/images/amaze01.jpg','/images/amaze02.jpg','/images/amaze03.jpg'],
   },
   {
     id: 'baleno-automatic',
@@ -172,7 +172,7 @@ export const vehicles: Vehicle[] = [
     deposit: 2000,
     cleaningCharge: 250,
     idProofs: 2,
-    image: '/images/hatchback.jpg',
+    images: ['/images/baleno1.jpg','/images/baleno2.jpg'],
   },
   {
     id: 'tata-altroz',
@@ -187,7 +187,7 @@ export const vehicles: Vehicle[] = [
     cleaningCharge: 300,
     idProofs: 2,
     delivery: { airport: 350, egmore: 250, central: 250 },
-    image: '/images/hatchback.jpg',
+    images: ['/images/altroz1.jpg','/images/altroz2.jpg','/images/altroz3.jpg'],
   },
   {
     id: 'swift-dzire',
@@ -201,7 +201,7 @@ export const vehicles: Vehicle[] = [
     deposit: 2000,
     cleaningCharge: 250,
     idProofs: 2,
-    image: '/images/sedan.jpg',
+    images: ['/images/dizre1.jpg','/images/dizre2.jpg','/images/dirze3.jpg'],
   },
 ];
 

@@ -221,4 +221,49 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
 );
 CarouselNext.displayName = "CarouselNext";
 
+// Simple autoplay plugin for Embla. Pauses on pointer interaction and mouse enter, resumes on release/leave.
+// Usage: pass the plugin to the `plugins` prop on <Carousel plugins={[autoplay({ delay: 4000 })]} />
+export function autoplay({ delay = 3000, stopOnInteraction = true } = {}) {
+  return (embla: UseEmblaCarouselType[1]) => {
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    const stop = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const play = () => {
+      stop();
+      timer = setInterval(() => {
+        if (!embla) return;
+        // if we can't scroll next, loop back to start
+        if (!embla.canScrollNext()) {
+          embla.scrollTo(0);
+        } else {
+          embla.scrollNext();
+        }
+      }, delay);
+    };
+
+    // start/stop hooks
+    embla.on("init", play);
+    embla.on("destroy", stop);
+
+    if (stopOnInteraction) {
+      embla.on("pointerDown", stop);
+      embla.on("pointerUp", play);
+      embla.on("mouseEnter", stop);
+      embla.on("mouseLeave", play);
+    }
+
+    return {
+      destroy() {
+        stop();
+      },
+    };
+  };
+}
+
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
