@@ -40,12 +40,30 @@ function useCarousel() {
 
 const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>(
   ({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }, ref) => {
+    // sanitize plugins so Embla never receives undefined/null `options` (prevents runtime crash)
+    const sanitizedPlugins = (Array.isArray(plugins) ? plugins : [])
+      .filter(Boolean)
+      .map((p) => {
+        try {
+          // if plugin already has options, keep it
+          if ((p as any).options != null) return p;
+        } catch (e) {
+          // ignore and fallthrough to wrapper below
+        }
+
+        // wrap plugin so embla's comparators can safely read `.options`
+        // Do NOT assign to `function.name` (it's read-only). Only ensure `.options` exists.
+        const wrapper: any = typeof p === "function" ? p : () => ({});
+        wrapper.options = (p as any)?.options ?? {};
+        return wrapper;
+      });
+
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
       },
-      plugins,
+      sanitizedPlugins,
     );
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
@@ -224,7 +242,7 @@ CarouselNext.displayName = "CarouselNext";
 // Simple autoplay plugin for Embla. Pauses on pointer interaction and mouse enter, resumes on release/leave.
 // Usage: pass the plugin to the `plugins` prop on <Carousel plugins={[autoplay({ delay: 4000 })]} />
 export function autoplay({ delay = 3000, stopOnInteraction = true } = {}) {
-  return (embla: UseEmblaCarouselType[1]) => {
+  const plugin = (embla: UseEmblaCarouselType[1]) => {
     let timer: ReturnType<typeof setInterval> | null = null;
 
     const stop = () => {
@@ -264,6 +282,12 @@ export function autoplay({ delay = 3000, stopOnInteraction = true } = {}) {
       },
     };
   };
+
+  // Attach metadata expected by embla-react's plugin comparator.
+  // Do NOT set `plugin.name` (function.name is read-only). Only attach `.options`.
+  (plugin as any).options = { delay, stopOnInteraction, active: true };
+
+  return plugin;
 }
 
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };

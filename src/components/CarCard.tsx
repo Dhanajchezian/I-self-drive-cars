@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Fuel, Settings, ChevronDown, MapPin, FileText, MessageCircle } from 'lucide-react';
 import { Vehicle, getBookingLink } from '@/data/vehicles';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, autoplay } from '@/components/ui/carousel';
+import ErrorBoundary from '@/components/ui/error-boundary';
+import FallbackCarousel from '@/components/ui/fallback-carousel';
 
 interface CarCardProps {
   vehicle: Vehicle;
@@ -15,23 +17,25 @@ const CarCard = ({ vehicle }: CarCardProps) => {
       {/* Image */}
       <div className="relative aspect-[5/4] bg-primary/5 overflow-hidden">
         {vehicle.images && vehicle.images.length > 1 ? (
-          <Carousel plugins={[autoplay({ delay: 2000 })]}>
-            <CarouselContent className="flex">
-              {vehicle.images.map((src, i) => (
-                <CarouselItem key={i}>
-                  <img
-                    src={src}
-                    alt={`${vehicle.name} view ${i + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
+          <ErrorBoundary fallback={<FallbackCarousel images={vehicle.images} delay={2000} alt={vehicle.name} />}>
+            <Carousel plugins={[autoplay({ delay: 2000 })]}>
+              <CarouselContent className="flex">
+                {vehicle.images.map((src, i) => (
+                  <CarouselItem key={i}>
+                    <img
+                      src={src}
+                      alt={`${vehicle.name} view ${i + 1}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
 
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </ErrorBoundary>
         ) : (
           <img
             src={vehicle.images?.[0] ?? '/images/placeholder.svg'}
